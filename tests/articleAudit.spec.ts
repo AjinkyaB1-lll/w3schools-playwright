@@ -5,17 +5,13 @@ import {
   getImagesMissingAlt,
   getElementsMissingAccessibleName,
 } from '../utils/auditHelpers';
-
-const articlesToTest = [
-  '/html/html_images.asp',
-  '/accessibility/accessibility_intro.php',
-];
+import articles from '../test-data/articles.json';
 
 test.describe('W3Schools Article UI & Accessibility Audit', () => {
-  for (const articlePath of articlesToTest) {
-    test(`Audit images, alt text, and aria labels on ${articlePath}`, async ({ page }) => {
+  for (const article of articles) {
+    test(`Audit ${article.name} (${article.path})`, async ({ page }) => {
       const articlePage = new W3ArticlePage(page);
-      await articlePage.gotoArticle(articlePath);
+      await articlePage.gotoArticle(article.path);
 
       // 1. Check for broken images
       const brokenImages = await getBrokenImages(articlePage.images);
